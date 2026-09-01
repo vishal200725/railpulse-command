@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as TrainsIndexRouteImport } from './routes/trains.index'
 import { Route as TrainsTrainIdRouteImport } from './routes/trains.$trainId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulatorRoute = SimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrainsIndexRoute = TrainsIndexRouteImport.update({
@@ -31,30 +37,34 @@ const TrainsTrainIdRoute = TrainsTrainIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/simulator': typeof SimulatorRoute
   '/trains/$trainId': typeof TrainsTrainIdRoute
   '/trains/': typeof TrainsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/simulator': typeof SimulatorRoute
   '/trains/$trainId': typeof TrainsTrainIdRoute
   '/trains': typeof TrainsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/simulator': typeof SimulatorRoute
   '/trains/$trainId': typeof TrainsTrainIdRoute
   '/trains/': typeof TrainsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/trains/$trainId' | '/trains/'
+  fullPaths: '/' | '/simulator' | '/trains/$trainId' | '/trains/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/trains/$trainId' | '/trains'
-  id: '__root__' | '/' | '/trains/$trainId' | '/trains/'
+  to: '/' | '/simulator' | '/trains/$trainId' | '/trains'
+  id: '__root__' | '/' | '/simulator' | '/trains/$trainId' | '/trains/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SimulatorRoute: typeof SimulatorRoute
   TrainsTrainIdRoute: typeof TrainsTrainIdRoute
   TrainsIndexRoute: typeof TrainsIndexRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulator': {
+      id: '/simulator'
+      path: '/simulator'
+      fullPath: '/simulator'
+      preLoaderRoute: typeof SimulatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/trains/': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SimulatorRoute: SimulatorRoute,
   TrainsTrainIdRoute: TrainsTrainIdRoute,
   TrainsIndexRoute: TrainsIndexRoute,
 }
