@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
+import { Route as EventsRouteImport } from './routes/events'
 import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as TrainsIndexRouteImport } from './routes/trains.index'
 import { Route as TrainsTrainIdRouteImport } from './routes/trains.$trainId'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const AnalyticsRoute = AnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SimulatorRoute = SimulatorRouteImport.update({
@@ -44,6 +50,7 @@ const TrainsTrainIdRoute = TrainsTrainIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
+  '/events': typeof EventsRoute
   '/simulator': typeof SimulatorRoute
   '/trains/$trainId': typeof TrainsTrainIdRoute
   '/trains/': typeof TrainsIndexRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
+  '/events': typeof EventsRoute
   '/simulator': typeof SimulatorRoute
   '/trains/$trainId': typeof TrainsTrainIdRoute
   '/trains': typeof TrainsIndexRoute
@@ -59,19 +67,33 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
+  '/events': typeof EventsRoute
   '/simulator': typeof SimulatorRoute
   '/trains/$trainId': typeof TrainsTrainIdRoute
   '/trains/': typeof TrainsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analytics' | '/simulator' | '/trains/$trainId' | '/trains/'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/events'
+    | '/simulator'
+    | '/trains/$trainId'
+    | '/trains/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/simulator' | '/trains/$trainId' | '/trains'
+  to:
+    | '/'
+    | '/analytics'
+    | '/events'
+    | '/simulator'
+    | '/trains/$trainId'
+    | '/trains'
   id:
     | '__root__'
     | '/'
     | '/analytics'
+    | '/events'
     | '/simulator'
     | '/trains/$trainId'
     | '/trains/'
@@ -80,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
+  EventsRoute: typeof EventsRoute
   SimulatorRoute: typeof SimulatorRoute
   TrainsTrainIdRoute: typeof TrainsTrainIdRoute
   TrainsIndexRoute: typeof TrainsIndexRoute
@@ -99,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/analytics'
       fullPath: '/analytics'
       preLoaderRoute: typeof AnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/simulator': {
@@ -128,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
+  EventsRoute: EventsRoute,
   SimulatorRoute: SimulatorRoute,
   TrainsTrainIdRoute: TrainsTrainIdRoute,
   TrainsIndexRoute: TrainsIndexRoute,

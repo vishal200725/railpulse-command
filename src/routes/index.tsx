@@ -1,24 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { EventStream } from "@/components/rail/EventStream";
+import { KpiStrip } from "@/components/rail/KpiStrip";
+import { NetworkMap } from "@/components/rail/NetworkMap";
+import { RecommendationQueue } from "@/components/rail/RecommendationQueue";
+import { TrainRoster } from "@/components/rail/TrainRoster";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "RailPulse AI — Railway Traffic Command Center" },
+      {
+        name: "description",
+        content:
+          "Live digital-twin command center for railway traffic control: AI ETA prediction, delay propagation, conflict recommendations and what-if simulation.",
+      },
+      { property: "og:title", content: "RailPulse AI — Railway Traffic Command Center" },
+      {
+        property: "og:description",
+        content:
+          "AI-assisted railway control: predicted ETAs, cascade forecasting and precedence recommendations on a live corridor twin.",
+      },
+    ],
+  }),
+  component: CommandCenter,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function CommandCenter() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="space-y-4">
+      <KpiStrip />
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <NetworkMap />
+        <RecommendationQueue />
+      </div>
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <TrainRoster limit={8} />
+        <EventStream height="max-h-[420px]" />
+      </div>
     </div>
   );
 }
