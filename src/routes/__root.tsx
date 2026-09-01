@@ -11,6 +11,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AppShell } from "../components/rail/AppShell";
+import { RailProvider } from "../lib/rail/store";
 
 function NotFoundComponent() {
   return (
