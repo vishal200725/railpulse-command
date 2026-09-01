@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrainsIndexRouteImport } from './routes/trains.index'
+import { Route as TrainsTrainIdRouteImport } from './routes/trains.$trainId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const TrainsIndexRoute = TrainsIndexRouteImport.update({
   path: '/trains/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrainsTrainIdRoute = TrainsTrainIdRouteImport.update({
+  id: '/trains/$trainId',
+  path: '/trains/$trainId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/trains/$trainId': typeof TrainsTrainIdRoute
   '/trains/': typeof TrainsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/trains/$trainId': typeof TrainsTrainIdRoute
   '/trains': typeof TrainsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/trains/$trainId': typeof TrainsTrainIdRoute
   '/trains/': typeof TrainsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/trains/'
+  fullPaths: '/' | '/trains/$trainId' | '/trains/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/trains'
-  id: '__root__' | '/' | '/trains/'
+  to: '/' | '/trains/$trainId' | '/trains'
+  id: '__root__' | '/' | '/trains/$trainId' | '/trains/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TrainsTrainIdRoute: typeof TrainsTrainIdRoute
   TrainsIndexRoute: typeof TrainsIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrainsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/trains/$trainId': {
+      id: '/trains/$trainId'
+      path: '/trains/$trainId'
+      fullPath: '/trains/$trainId'
+      preLoaderRoute: typeof TrainsTrainIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TrainsTrainIdRoute: TrainsTrainIdRoute,
   TrainsIndexRoute: TrainsIndexRoute,
 }
 export const routeTree = rootRouteImport
