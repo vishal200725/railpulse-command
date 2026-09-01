@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnalyticsRouteImport } from './routes/analytics'
+import { Route as EventsRouteImport } from './routes/events'
+import { Route as SimulatorRouteImport } from './routes/simulator'
+import { Route as TrainsIndexRouteImport } from './routes/trains.index'
+import { Route as TrainsTrainIdRouteImport } from './routes/trains.$trainId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnalyticsRoute = AnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulatorRoute = SimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrainsIndexRoute = TrainsIndexRouteImport.update({
+  id: '/trains/',
+  path: '/trains/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrainsTrainIdRoute = TrainsTrainIdRouteImport.update({
+  id: '/trains/$trainId',
+  path: '/trains/$trainId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/events': typeof EventsRoute
+  '/simulator': typeof SimulatorRoute
+  '/trains/$trainId': typeof TrainsTrainIdRoute
+  '/trains/': typeof TrainsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/events': typeof EventsRoute
+  '/simulator': typeof SimulatorRoute
+  '/trains/$trainId': typeof TrainsTrainIdRoute
+  '/trains': typeof TrainsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/events': typeof EventsRoute
+  '/simulator': typeof SimulatorRoute
+  '/trains/$trainId': typeof TrainsTrainIdRoute
+  '/trains/': typeof TrainsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/events'
+    | '/simulator'
+    | '/trains/$trainId'
+    | '/trains/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/analytics'
+    | '/events'
+    | '/simulator'
+    | '/trains/$trainId'
+    | '/trains'
+  id:
+    | '__root__'
+    | '/'
+    | '/analytics'
+    | '/events'
+    | '/simulator'
+    | '/trains/$trainId'
+    | '/trains/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnalyticsRoute: typeof AnalyticsRoute
+  EventsRoute: typeof EventsRoute
+  SimulatorRoute: typeof SimulatorRoute
+  TrainsTrainIdRoute: typeof TrainsTrainIdRoute
+  TrainsIndexRoute: typeof TrainsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +117,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/analytics': {
+      id: '/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulator': {
+      id: '/simulator'
+      path: '/simulator'
+      fullPath: '/simulator'
+      preLoaderRoute: typeof SimulatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trains/': {
+      id: '/trains/'
+      path: '/trains'
+      fullPath: '/trains/'
+      preLoaderRoute: typeof TrainsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trains/$trainId': {
+      id: '/trains/$trainId'
+      path: '/trains/$trainId'
+      fullPath: '/trains/$trainId'
+      preLoaderRoute: typeof TrainsTrainIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnalyticsRoute: AnalyticsRoute,
+  EventsRoute: EventsRoute,
+  SimulatorRoute: SimulatorRoute,
+  TrainsTrainIdRoute: TrainsTrainIdRoute,
+  TrainsIndexRoute: TrainsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
