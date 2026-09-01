@@ -2,9 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { WhatIfSimulator } from "@/components/rail/WhatIfSimulator";
 
 export const Route = createFileRoute("/simulator")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    train: typeof search.train === "string" ? search.train : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { train?: string } =>
+    typeof search["train"] === "string" ? { train: search["train"] } : {},
   head: () => ({
     meta: [
       { title: "What-If Simulation Lab — RailPulse AI" },
@@ -24,7 +23,8 @@ export const Route = createFileRoute("/simulator")({
 });
 
 function SimulatorPage() {
-  const { train } = Route.useSearch();
+  const search = Route.useSearch();
+  const initial = search.train;
   return (
     <div className="space-y-5">
       <div>
@@ -35,7 +35,7 @@ function SimulatorPage() {
           commit.
         </p>
       </div>
-      <WhatIfSimulator initialTrain={train} />
+      {initial ? <WhatIfSimulator initialTrain={initial} /> : <WhatIfSimulator />}
     </div>
   );
 }
